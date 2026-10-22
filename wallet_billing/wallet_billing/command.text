@@ -1,0 +1,12 @@
+   # create and activate env
+
+   py -m venv env
+    .\env\Scripts\activate  
+# migrate and start app and create user and provider through command
+py manage.py migrate    #changes into schema through migration files into dbsqlite db
+   
+   
+python manage.py create_user --email asha@example.com --password pass12345 --role USER  ---- For User Role
+python manage.py create_user --email dr.rao@example.com --password pass12345 --role PROVIDER ---- For Provider Role
+
+python manage.py runserver 8000    --- Start application port 8000   for publicly on same network --python manage.py runserver 0.0.0.0:8000
