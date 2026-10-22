@@ -221,7 +221,7 @@ class BillingGuardTests(BillingTestCase):
         self.assertIs(outcome, services.ChargeOutcome.INSUFFICIENT_FUNDS)
         self.assertEqual(self.balance(), Decimal("10.00"))
         self.assertEqual(self.charges(sid).count(), 0)
-        self.assertEqual(self.reload(sid).billed_minutes, 0)      # the claim was rolled back too
+        self.assertEqual(self.reload(sid).billed_minutes, 0)     
 
     def test_database_rejects_duplicate_minute_rows(self):
         fund_wallet(self.user, "500")

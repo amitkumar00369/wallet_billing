@@ -5,7 +5,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-secret-change-me")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-insecure-secret-key-change-me-in-production-0123456789")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
 
@@ -44,7 +44,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = []
 if "test" in sys.argv:
-    PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]  
+    PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]  # fast hashing for tests only
 
 USE_TZ = True
 TIME_ZONE = "UTC"
@@ -58,7 +58,7 @@ REST_FRAMEWORK = {
 
 
 SESSION_RATE_PER_MINUTE = Decimal(os.environ.get("SESSION_RATE_PER_MINUTE", "50.00"))
-MIN_START_MINUTES = 5  
+MIN_START_MINUTES = 5   
 
 
 RECHARGE_CALLBACK_SECRET = os.environ.get("RECHARGE_CALLBACK_SECRET", "dev-callback-secret")

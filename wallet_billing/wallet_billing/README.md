@@ -33,15 +33,16 @@ Views are thin. Business rules live in each app's `services.py`; `consultations/
 ## Setup
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate            # Windows: .venv\Scripts\activate
+python -m venv env
+ .\env\Scripts\activate          
 pip install -r requirements.txt
 
-cp .env.example .env                 # optional; defaults work for local use
-set -a; source .env; set +a          # optional; loads the variables into your shell
+cp .env.example .env               
+set -a; source .env; set +a         
 
-python manage.py migrate             # creates db.sqlite3
-python manage.py runserver 8000      # http://127.0.0.1:8000
+python manage.py makemigrations #skip this command i already initate migrate files in every apps
+python manage.py migrate           
+python manage.py runserver 8000    
 ```
 
 Environment variables (all optional, see `.env.example`):
@@ -59,14 +60,15 @@ Environment variables (all optional, see `.env.example`):
 There is no signup endpoint (not required by the assignment). Use the management command; a wallet is created automatically:
 
 ```bash
-python manage.py create_user --email asha@example.com   --password pass12345 --role USER
+python manage.py create_user --email asha@example.com   --password pass12345 --role USER     
 python manage.py create_user --email dr.rao@example.com --password pass12345 --role PROVIDER
 ```
+<!-- This is my test user you can change with some other user and provider for testing -->
 
 ### Running the tests
 
 ```bash
-python manage.py test                       # all 75 tests
+python manage.py test                       # I have testd and all 75 tests has passed
 python manage.py test billing -v 2          # one app
 ```
 
@@ -99,7 +101,7 @@ Send `Authorization: Bearer <access>` on every `/private/` endpoint (see the nex
 All routes live under `/api/v1/<area>/`. If the URI has a `private` segment it needs a valid JWT; otherwise it is public.
 
 | Kind | Pattern | Example | Checked by |
-|---|---|---|---|
+
 | Public | `/api/v1/<area>/<endpoint>/` | `POST /api/v1/recharge/callback/`, `POST /api/v1/auth/token/` | nothing (the callback checks its own shared secret) |
 | Private | `/api/v1/<area>/private/<endpoint>/` | `GET /api/v1/wallet/private/balance/`, `POST /api/v1/sessions/private/1/start/` | JWT |
 
@@ -108,7 +110,7 @@ The JWT check is done by `accounts/middleware.py` for every path with a `private
 ## API
 
 | Method | Path | Who | Purpose |
-|---|---|---|---|
+
 | GET | `/api/v1/wallet/private/balance/` | any logged-in user | own balance |
 | POST | `/api/v1/recharge/private/initiate/` | any logged-in user | start a recharge `{"amount": "300.00"}` |
 | POST | `/api/v1/recharge/callback/` | mock payment provider | `{"reference": "...", "status": "success" or "failed"}` + `X-Callback-Secret` |

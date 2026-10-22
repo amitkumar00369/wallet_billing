@@ -223,7 +223,7 @@ class StateMachineTests(SessionTestCase):
             self.clock.advance(minutes=3)
             resp = self.post(self.user_api, sid, "end")
         self.assertEqual(resp.data["per_minute_rate"], "20.00")
-        self.assertEqual(self.balance(), Decimal("940.00"))                  # 3 x 20, not 3 x 100
+        self.assertEqual(self.balance(), Decimal("940.00"))                
 
     def test_client_cannot_choose_the_rate(self):
         resp = self.user_api.post("/api/v1/sessions/private/create/", {"per_minute_rate": "1.00", "status": "completed"}, format="json")

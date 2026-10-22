@@ -100,7 +100,7 @@ class PrivateRouteTests(TestCase):
                 self.assertEqual(resp.json()["detail"], "Authentication credentials were not provided.")
 
     def test_private_uris_reject_garbage_and_refresh_tokens(self):
-        for token in ("not-a-jwt", self.refresh):     # a refresh token is not an access token
+        for token in ("not-a-jwt", self.refresh):  
             with self.subTest(token=token[:12]):
                 resp = self.client.get("/api/v1/wallet/private/balance/", HTTP_AUTHORIZATION=f"Bearer {token}")
                 self.assertEqual(resp.status_code, 401)
@@ -118,7 +118,7 @@ class PrivateRouteTests(TestCase):
     def test_public_uris_do_not_need_a_token(self):
         login = self.client.post("/api/v1/auth/token/", {"email": "asha@example.com", "password": "pass12345"}, format="json")
         self.assertEqual(login.status_code, 200)
-        # reaches the view (which checks its own shared secret) instead of being stopped for a missing JWT
+    
         callback = self.client.post("/api/v1/recharge/callback/", {"reference": "x", "status": "success"}, format="json")
         self.assertEqual(callback.status_code, 403)
         self.assertEqual(callback.json()["detail"], "Invalid callback secret.")
