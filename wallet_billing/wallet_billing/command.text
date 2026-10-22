@@ -10,3 +10,11 @@ python manage.py create_user --email asha@example.com --password pass12345 --rol
 python manage.py create_user --email dr.rao@example.com --password pass12345 --role PROVIDER ---- For Provider Role
 
 python manage.py runserver 8000    --- Start application port 8000   for publicly on same network --python manage.py runserver 0.0.0.0:8000
+
+
+Command for test
+python manage.py test  --- For all app want to test
+python manage.py test billing                       # biling app
+python manage.py test wallets.tests.RechargeCallbackTests   # RechargeCallbackTests class
+python manage.py test <app>.tests.<Class>.<test_name> -v 2  # command for singla unit test like above we have tested singal class
+python manage.py test -k mandatory -v 2             # mandatory wale
