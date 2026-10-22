@@ -23,6 +23,7 @@ class RechargeCreateView(APIView):
         serializer = RechargeCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         recharge = services.create_recharge(request.user, serializer.validated_data["amount"])
+        print("rechareg", recharge)
         return Response(RechargeSerializer(recharge).data, status=status.HTTP_201_CREATED)
 
 
@@ -42,4 +43,5 @@ class RechargeCallbackView(APIView):
         recharge, credited = services.process_recharge_callback(
             serializer.validated_data["reference"], serializer.validated_data["status"]
         )
+        print("hdhdggddjhjdhjf", credited,recharge)
         return Response({"reference": recharge.reference, "status": recharge.status, "credited": credited})

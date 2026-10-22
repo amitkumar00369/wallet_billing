@@ -12,11 +12,13 @@ Status = RechargeTransaction.Status
 
 
 def get_wallet(user):
+    print("users",user)
     return Wallet.objects.get(user=user)
 
 
 def create_recharge(user, amount):
     wallet = get_wallet(user)
+    print("walledt data",wallet)
     return RechargeTransaction.objects.create(
         user=user, wallet=wallet, amount=amount, reference=f"rch_{uuid.uuid4().hex[:24]}"
     )
@@ -29,8 +31,11 @@ def process_recharge_callback(reference, outcome):
         flipped = RechargeTransaction.objects.filter(reference=reference, status=Status.PENDING).update(
             status=outcome, processed_at=now, updated_at=now
         )
+        print("flipped", flipped)
         try:
             recharge = RechargeTransaction.objects.get(reference=reference)
+            print("recharge", recharge)
+
         except RechargeTransaction.DoesNotExist:
             raise NotFound("Unknown recharge reference.")
 
@@ -42,5 +47,6 @@ def process_recharge_callback(reference, outcome):
             return recharge, outcome == Status.SUCCESS
 
     if recharge.status == outcome:
+        print("yes come")
         return recharge, False      
     raise RechargeConflict(f"Recharge {reference} is already '{recharge.status}' and cannot become '{outcome}'.")

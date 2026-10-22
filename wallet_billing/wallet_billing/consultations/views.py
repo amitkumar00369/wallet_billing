@@ -16,6 +16,8 @@ PROVIDER_ONLY_ACTIONS = {"accept"}
 class SessionViewSet(viewsets.ViewSet):
     def get_permissions(self):
         permissions = [IsAuthenticated()]
+        print("request.user",permissions)
+
         if self.action in USER_ONLY_ACTIONS:
             permissions.append(IsUserRole())
         elif self.action in PROVIDER_ONLY_ACTIONS:
@@ -23,15 +25,20 @@ class SessionViewSet(viewsets.ViewSet):
         return permissions
 
     def create(self, request):
+        print("request.user",request.user)
         session = services.create_session(request.user)
         return Response(SessionSerializer(session).data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
+        print("request.user",request.user, pk)
+
         session = services.get_session_for_actor(pk, request.user)
         return Response(SessionSerializer(session).data)
 
     @action(detail=True, methods=["post"])
     def assign(self, request, pk=None):
+        print("request.user",request.data, pk)
+
         serializer = AssignSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         session = services.assign_provider(pk, request.user, serializer.validated_data["provider_id"])
@@ -39,19 +46,27 @@ class SessionViewSet(viewsets.ViewSet):
 
     @action(detail=True, methods=["post"])
     def accept(self, request, pk=None):
+        print("request.user",request.data, pk)
+
         return Response(SessionSerializer(services.accept_session(pk, request.user)).data)
 
     @action(detail=True, methods=["post"])
     def start(self, request, pk=None):
+        print("request.user",request.data, pk)
+
         return Response(SessionSerializer(services.start_session(pk, request.user)).data)
 
     @action(detail=True, methods=["post"])
     def end(self, request, pk=None):
+        print("request.user",request.data, pk)
+
         return Response(SessionSerializer(services.end_session(pk, request.user)).data)
 
     @action(detail=True, methods=["post"])
     def bill(self, request, pk=None):
-        # only the session's own user or provider may trigger billing
+        print("request.user",request.data, pk)
+
+
         session = services.get_session_for_actor(pk, request.user)
         result = billing_services.bill_session(session.pk)
         return Response({

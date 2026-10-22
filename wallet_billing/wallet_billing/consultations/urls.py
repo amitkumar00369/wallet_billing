@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import SessionViewSet
 
-# Every route is spelled out so the URL says what it does. All of them need a JWT (see "private").
+# Private means all authenticated routes pk-primary key
 urlpatterns = [
     path("private/create/", SessionViewSet.as_view({"post": "create"}), name="session-create"),
     path("private/<int:pk>/details/", SessionViewSet.as_view({"get": "retrieve"}), name="session-details"),
