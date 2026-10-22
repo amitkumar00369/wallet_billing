@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import timedelta  
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "production-0123456789")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "production-sfghjkloerhhrr")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
 
