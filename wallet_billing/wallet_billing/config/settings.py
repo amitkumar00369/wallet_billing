@@ -2,7 +2,7 @@ import os
 import sys
 from decimal import Decimal
 from pathlib import Path
-
+from datetime import timedelta  
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "production-0123456789")
@@ -55,7 +55,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
 }
-
+SIMPLE_JWT = {                                       
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),     # access token ki expiry
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),        # refresh token ki expiry
+}
 
 SESSION_RATE_PER_MINUTE = Decimal(os.environ.get("SESSION_RATE_PER_MINUTE", "50.00"))
 MIN_START_MINUTES = 5   
